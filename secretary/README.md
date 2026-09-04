@@ -40,7 +40,9 @@ Slack으로 요약을 보낸다.
 - **claude.ai 아티팩트(비서실 현황판)는 이 워크플로가 직접 갱신하지 않는다.**
   아티팩트의 실시간 DB는 브라우저에서 페이지가 열려 있을 때만 쓸 수 있는
   구조라 GitHub Actions에서 직접 쓸 수 없다. 대신 매일 GitHub Actions 실행
-  직후 별도 Claude 세션(Routine)이 `data/dashboard.json`을 읽어 아티팩트를
-  다시 게시(republish)하도록 구성해 두었다 — 두 화면이 사실상 함께 갱신된다.
+  약 20분 뒤 별도 Claude Code Remote Routine("비서실장 GitHub→아티팩트 동기화",
+  trig_015pPnRMkpbpyrmzuztgytQn)이 `data/dashboard.json`을 읽어 GitHub 이슈
+  유래 항목(`gh-`로 시작하는 id)만 아티팩트 DB의 `tasks` 컬렉션에 반영한다.
+  사용자가 아티팩트 화면에서 직접 추가한 업무는 건드리지 않는다.
 - 대시보드 데이터 스키마는 `data/dashboard.json`의 `tasks[]`를 참고.
   (`id, title, category, priority, status, deadline, needsDecision, note, sourceUrl, updatedAt`)
