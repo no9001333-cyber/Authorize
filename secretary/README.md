@@ -46,3 +46,16 @@ Slack으로 요약을 보낸다.
   사용자가 아티팩트 화면에서 직접 추가한 업무는 건드리지 않는다.
 - 대시보드 데이터 스키마는 `data/dashboard.json`의 `tasks[]`를 참고.
   (`id, title, category, priority, status, deadline, needsDecision, note, sourceUrl, updatedAt`)
+
+## 글로벌 비즈니스 인텔리전스 섹션 (아티팩트 전용)
+
+"비서실 현황판" 아티팩트 하단에는 업무 보드와 별개로 "글로벌 비즈니스 인텔리전스"
+섹션이 있다 — 최신 AI/비즈니스 트렌드, 세계 매출 상위 기업과 주요 업종, 세계 AI
+기업 매출·ARR 순위(성격이 다른 매출을 섞지 않도록 3개 그룹으로 분리)를 담는다.
+
+이 섹션은 GitHub 이슈와 무관한 웹 리서치 콘텐츠라 이 저장소의 파이프라인이
+관리하지 않는다. 대신 Claude Code Remote Routine **"글로벌 비즈니스
+인텔리전스 주간 갱신"**(trig_01MtVHTKPZZ9453rNVgstGio, 매주 월요일
+07:30 KST)이 매주 다시 조사해서 아티팩트를 직접 재게시(republish)한다.
+확인되지 않는 수치는 추정치("est.")로 표시하거나 "매출 확인 필요"로 정직하게
+남기고, 지어낸 숫자를 채우지 않는 것을 원칙으로 한다.
