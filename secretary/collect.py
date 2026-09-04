@@ -204,7 +204,7 @@ def render_html(tasks, repo, generated_at, artifact_url):
 
     def decisions_html():
         if not decisions:
-            return '<p class="empty-note">확인이 필요한 항목이 없습니다.</p>'
+            return '<li class="empty-note">확인이 필요한 항목이 없습니다.</li>'
         items = []
         for t in decisions:
             note_html = f'<span class="li-note">{esc(t["note"])}</span>' if t["note"] else ""
@@ -213,7 +213,7 @@ def render_html(tasks, repo, generated_at, artifact_url):
 
     def upcoming_html():
         if not upcoming:
-            return '<p class="empty-note">임박한 마감이 없습니다.</p>'
+            return '<li class="empty-note">임박한 마감이 없습니다.</li>'
         return "".join(
             f'<li><span class="li-title mono">{dday_info(t["deadline"])["text"]}</span> · {esc(t["title"])}</li>'
             for t in upcoming
