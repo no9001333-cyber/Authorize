@@ -74,8 +74,13 @@ Slack으로 요약을 보낸다.
   `mcp__Claude_Code_Remote__list_triggers`로 전체 Routine 상태를 다시 조회해
   표를 채운다.
 - "파일정리 인덱스 매일 업데이트" Routine(trig_016eQgJEscT5HFnfNhK8KB7p)은
-  원래 주기가 "금요일 1회"로 잘못 설정되어 있었다(이름은 "매일"). 2026-09-16에
-  `CRON_TZ=Asia/Seoul 0 15 * * *`(매일 15:00 KST)로 정정했다. 이 Routine은
-  사용자의 로컬 컴퓨터가 Claude Cowork로 연결되어 있어야 실행된다
-  (`device_list_dir`/`device_bash` 도구 사용) — 이 저장소나 GitHub Actions와는
-  무관하다.
+  이름과 달리 실제 주기는 `CRON_TZ=Asia/Seoul 0 15 * * 5`(매주 금요일
+  15:00 KST 1회)가 맞는 설정이다 — 2026-09-16에 실수로 "매일"로 바꿨다가,
+  사용자 확인 후 원래대로 되돌렸다("금요일에 갱신해두면 월요일 아침엔
+  최신 상태"라는 것이 설계 의도). 이 Routine은 사용자의 로컬 컴퓨터가
+  Claude Cowork로 연결되어 있어야 실행된다(`device_list_dir`/`device_bash`
+  도구 사용) — 이 저장소나 GitHub Actions와는 무관하다. 결과물은
+  `C:\Users\USER\Downloads\파일정리_인덱스_v4_3.html`이며, 아티팩트의 파일
+  인덱스 패널은 상태 요약이 아니라 이 파일을 직접 여는 `file://` 링크를
+  보여준다(브라우저 보안 정책상 https 페이지에서 막힐 수 있어, 그 경우
+  링크 주소를 복사해 열어야 한다는 안내도 함께 넣었다).
