@@ -43,7 +43,8 @@ Slack으로 요약을 보낸다.
   약 20분 뒤 별도 Claude Code Remote Routine("비서실장 GitHub→아티팩트 동기화",
   trig_015pPnRMkpbpyrmzuztgytQn)이 `data/dashboard.json`을 읽어 GitHub 이슈
   유래 항목(`gh-`로 시작하는 id)만 아티팩트 DB의 `tasks` 컬렉션에 반영한다.
-  사용자가 아티팩트 화면에서 직접 추가한 업무는 건드리지 않는다.
+  사용자가 아티팩트 화면에서 직접 추가한 업무는 건드리지 않는다. 이 Routine은
+  같은 실행에서 "예약된 작업 · 루틴 현황" 패널(아래 참고)도 함께 갱신한다.
 - 대시보드 데이터 스키마는 `data/dashboard.json`의 `tasks[]`를 참고.
   (`id, title, category, priority, status, deadline, needsDecision, note, sourceUrl, updatedAt`)
 
@@ -59,3 +60,22 @@ Slack으로 요약을 보낸다.
 07:30 KST)이 매주 다시 조사해서 아티팩트를 직접 재게시(republish)한다.
 확인되지 않는 수치는 추정치("est.")로 표시하거나 "매출 확인 필요"로 정직하게
 남기고, 지어낸 숫자를 채우지 않는 것을 원칙으로 한다.
+
+## 예약된 작업 · 루틴 현황 / 파일 정리 인덱스 패널 (아티팩트 전용)
+
+아티팩트에는 업무 보드·글로벌 인텔리전스 섹션과 별개로 "예약된 작업 · 루틴
+현황" 섹션이 있다 — 사용자 계정의 전체 Claude Routine 목록(이 대시보드용 2건
+포함, 다른 프로젝트·emtech-biz·개인 비서용 루틴까지 총 14건)과 로컬 컴퓨터
+파일 정리 인덱스("컴퓨터 파일정리" 프로젝트, `C:\Users\USER\Documents\파일정리_인덱스.html`)의
+상태를 한 화면에서 확인할 수 있게 모아둔 것이다.
+
+- 이 섹션은 "비서실장 GitHub→아티팩트 동기화" Routine(위 참고)이 매일 GitHub
+  동기화와 같은 실행에서 함께 갱신한다 — 별도 Routine을 새로 만들지 않았다.
+  `mcp__Claude_Code_Remote__list_triggers`로 전체 Routine 상태를 다시 조회해
+  표를 채운다.
+- "파일정리 인덱스 매일 업데이트" Routine(trig_016eQgJEscT5HFnfNhK8KB7p)은
+  원래 주기가 "금요일 1회"로 잘못 설정되어 있었다(이름은 "매일"). 2026-09-16에
+  `CRON_TZ=Asia/Seoul 0 15 * * *`(매일 15:00 KST)로 정정했다. 이 Routine은
+  사용자의 로컬 컴퓨터가 Claude Cowork로 연결되어 있어야 실행된다
+  (`device_list_dir`/`device_bash` 도구 사용) — 이 저장소나 GitHub Actions와는
+  무관하다.
