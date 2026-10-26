@@ -43,8 +43,9 @@ Slack으로 요약을 보낸다.
   약 20분 뒤 별도 Claude Code Remote Routine("비서실장 GitHub→아티팩트 동기화",
   trig_015pPnRMkpbpyrmzuztgytQn)이 `data/dashboard.json`을 읽어 GitHub 이슈
   유래 항목(`gh-`로 시작하는 id)만 아티팩트 DB의 `tasks` 컬렉션에 반영한다.
-  사용자가 아티팩트 화면에서 직접 추가한 업무는 건드리지 않는다. 이 Routine은
-  같은 실행에서 "예약된 작업 · 루틴 현황" 패널(아래 참고)도 함께 갱신한다.
+  사용자가 아티팩트 화면에서 직접 추가한 업무는 건드리지 않는다. (2026-10-26
+  이전에는 이 Routine이 "예약된 작업 · 루틴 현황" 패널 갱신도 같이 맡았으나,
+  아래 이유로 별도 Routine으로 분리했다.)
 - 대시보드 데이터 스키마는 `data/dashboard.json`의 `tasks[]`를 참고.
   (`id, title, category, priority, status, deadline, needsDecision, note, sourceUrl, updatedAt`)
 
@@ -69,10 +70,20 @@ Slack으로 요약을 보낸다.
 파일 정리 인덱스("컴퓨터 파일정리" 프로젝트, `C:\Users\USER\Documents\파일정리_인덱스.html`)의
 상태를 한 화면에서 확인할 수 있게 모아둔 것이다.
 
-- 이 섹션은 "비서실장 GitHub→아티팩트 동기화" Routine(위 참고)이 매일 GitHub
-  동기화와 같은 실행에서 함께 갱신한다 — 별도 Routine을 새로 만들지 않았다.
-  `mcp__Claude_Code_Remote__list_triggers`로 전체 Routine 상태를 다시 조회해
-  표를 채운다.
+- 이 섹션은 2026-10-26 기준 **"예약 루틴 현황판 일일 갱신"**(trig_01H2DXLfhbaddcY2nPW6S4hx,
+  평일 07:35 KST, GitHub 동기화 Routine 15분 뒤)이라는 별도의 전용 Routine이 갱신한다.
+  `mcp__Claude_Code_Remote__list_triggers`로 전체 Routine 상태를 다시 조회해 표를 채운다.
+  **알아둘 것(장애 기록)**: 2026-09-17~10-26 사이 이 패널이 전혀 갱신되지 않은 채
+  방치됐다. 당시엔 "비서실장 GitHub→아티팩트 동기화" Routine이 GitHub 동기화와
+  패널 갱신을 한 번에 맡고 있었는데, 그 Routine의 지침 끝에 있던 "정상적으로
+  끝났다면 보고하지 않는다(조용한 작업)"는 문구를 모델이 "보고할 내용이 없으면
+  일(패널 갱신) 자체를 안 해도 된다"로 잘못 해석해, GitHub 동기화만 22초 만에
+  마치고 패널 갱신 단계는 매번 건너뛴 것으로 보인다(last_run은 계속 SUCCEEDED로
+  기록되어 실패로 드러나지 않았다). 2026-10-26에 사용자가 "왜 정리가 안되지"라고
+  지적해 발견 — 그래서 패널 갱신을 별도 Routine으로 완전히 분리하고, 그 지침에
+  "할 일이 없다는 판단으로 건너뛰는 것은 실패"라고 명시적으로 못박았다. 같은
+  함정(두 가지 일을 한 Routine에 맡기고 "조용히 끝내라"고만 지시)을 다른
+  Routine에도 반복하지 않도록 주의.
 - "파일정리 인덱스 매일 업데이트" Routine(trig_016eQgJEscT5HFnfNhK8KB7p)은
   이름과 달리 실제 주기는 `CRON_TZ=Asia/Seoul 0 15 * * 5`(매주 금요일
   15:00 KST 1회)가 맞는 설정이다 — 2026-09-16에 실수로 "매일"로 바꿨다가,
